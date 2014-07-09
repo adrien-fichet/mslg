@@ -19,7 +19,12 @@ window.onload = function() {
         ground.scale.setTo(2, 2);
         ground.body.immovable = true;
 
+        var ledge = platforms.create(400, 100, 'ground');
+        ledge.body.immovable = true;
+        ledge = platforms.create(-150, 200, 'ground');
+        ledge.body.immovable = true;
 
+        
     }
 
     function update() {
