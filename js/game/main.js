@@ -25,7 +25,8 @@ window.onload = function() {
     var game = new Phaser.Game(600, 400, Phaser.AUTO, '', { preload: preload, create: create, update: update });
     var platforms;
     var player;
-    var cursors
+    var cursors;
+    var stars;
 
     function preload () {
         game.load.image('sky', 'assets/sky.png');
@@ -47,6 +48,12 @@ window.onload = function() {
 
         makePlatforms(platforms);
 
+        stars = game.add.group();
+        stars.enableBody = true;
+        var star = stars.create(557, 0, 'star');
+        star.body.gravity.y = 300;
+        star.body.bounce.y = 0.7;
+
         player = game.add.sprite(20, 200, 'dude');
         game.physics.arcade.enable(player);
 
@@ -62,6 +69,8 @@ window.onload = function() {
 
     function update() {
         game.physics.arcade.collide(player, platforms);
+        game.physics.arcade.collide(stars, platforms);
+        game.physics.arcade.overlap(player, stars, collectStar, null, this);
 
         player.body.velocity.x = 0;
 
@@ -81,5 +90,9 @@ window.onload = function() {
         if (cursors.up.isDown && player.body.touching.down) {
             player.body.velocity.y = -300;  // jump
         }
+    }
+
+    function collectStar(player, star) {
+        star.kill();
     }
 };
