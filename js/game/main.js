@@ -1,3 +1,26 @@
+var Ledge = function(platforms, x, y, sx, sy) {
+    var ledge = platforms.create(x, y, 'ground');
+    if (sx == null) { sx = 0.25; }
+    if (sy == null) { sy = 0.5; }
+    ledge.scale.setTo(sx, sy);
+    ledge.body.immovable = true;
+};
+
+var makePlatforms = function(platforms) {
+    new Ledge(platforms, 100, 300);
+    new Ledge(platforms, 300, 300);
+    new Ledge(platforms, 440, 270, 0.10);
+    new Ledge(platforms, 440, 230, 0.10);
+    new Ledge(platforms, 350, 200, 0.10);
+    new Ledge(platforms, 160, 160);
+    new Ledge(platforms, 60, 130, 0.10);
+    new Ledge(platforms, 0, 100);
+    new Ledge(platforms, 200, 70);
+    new Ledge(platforms, 390, 100);
+    new Ledge(platforms, 550, 90, 0.10);
+    new Ledge(platforms, 550, 50, 0.10);
+};
+
 window.onload = function() {
     var game = new Phaser.Game(600, 400, Phaser.AUTO, '', { preload: preload, create: create, update: update });
     var platforms;
@@ -22,12 +45,9 @@ window.onload = function() {
         ground.scale.setTo(2, 2);
         ground.body.immovable = true;
 
-        var ledge = platforms.create(400, 100, 'ground');
-        ledge.body.immovable = true;
-        ledge = platforms.create(-150, 200, 'ground');
-        ledge.body.immovable = true;
+        makePlatforms(platforms);
 
-        player = game.add.sprite(32, game.world.height - 150, 'dude');
+        player = game.add.sprite(20, 200, 'dude');
         game.physics.arcade.enable(player);
 
         player.body.bounce.y = 0.2;
