@@ -8,27 +8,27 @@ var Configuration = function() {
     self.PLAYER_JUMP_VELOCITY = -300;
 };
 
-var Ledge = function(platforms, x, y, sx, sy) {
+var createLedge = function(platforms, x, y, sx, sy) {
     var ledge = platforms.create(x, y, 'ground');
     if (sx == null) { sx = 0.25; }
     if (sy == null) { sy = 0.5; }
     ledge.scale.setTo(sx, sy);
     ledge.body.immovable = true;
+    return ledge;
 };
 
-var makePlatforms = function(platforms) {
-    new Ledge(platforms, 100, 300);
-    new Ledge(platforms, 300, 300);
-    new Ledge(platforms, 440, 270, 0.10);
-    new Ledge(platforms, 440, 230, 0.10);
-    new Ledge(platforms, 350, 200, 0.10);
-    new Ledge(platforms, 160, 160);
-    new Ledge(platforms, 60, 130, 0.10);
-    new Ledge(platforms, 0, 100);
-    new Ledge(platforms, 200, 70);
-    new Ledge(platforms, 390, 100);
-    new Ledge(platforms, 550, 90, 0.10);
-    new Ledge(platforms, 550, 50, 0.10);
+var makeIdlePlatforms = function(platforms) {
+    createLedge(platforms, 100, 300);
+    createLedge(platforms, 440, 270, 0.10);
+    createLedge(platforms, 440, 230, 0.10);
+    createLedge(platforms, 350, 200, 0.10);
+    createLedge(platforms, 160, 160);
+    createLedge(platforms, 60, 130, 0.10);
+    createLedge(platforms, 0, 100);
+    createLedge(platforms, 200, 70);
+    createLedge(platforms, 390, 100);
+    createLedge(platforms, 550, 90, 0.10);
+    createLedge(platforms, 550, 50, 0.10);
 };
 
 window.onload = function() {
@@ -42,6 +42,7 @@ window.onload = function() {
     var text;
     var font;
     var image;
+    var movingLedge;
 
     function preload() {
         Phaser.Canvas.setSmoothingEnabled(game.context, false);
@@ -63,7 +64,16 @@ window.onload = function() {
         ground.scale.setTo(2, 2);
         ground.body.immovable = true;
 
-        makePlatforms(platforms);
+        makeIdlePlatforms(platforms);
+        movingLedge = createLedge(platforms, 300, 300);
+        movingLedge.move = function() {
+            if (movingLedge.x >= 400) {
+                movingLedge.body.velocity.x = -50;
+            } else if (movingLedge.x <= 300) {
+                movingLedge.body.velocity.x = 50;
+            }
+        };
+
         setupFont();
 
         stars = game.add.group();
@@ -109,6 +119,8 @@ window.onload = function() {
         if (cursors.up.isDown && player.body.touching.down) {
             player.body.velocity.y = conf.PLAYER_JUMP_VELOCITY;  // jump
         }
+
+        movingLedge.move();
     }
 
     function collectStar(player, star) {
