@@ -2,8 +2,8 @@ var Configuration = function() {
     var self = this;
     self.WINDOW_WIDTH = 600;
     self.WINDOW_HEIGHT = 400;
-    self.PLAYER_INITIAL_POS_X = 20;
-    self.PLAYER_INITIAL_POS_Y = 200;
+    self.PLAYER_INITIAL_POS_X = 450;//20;
+    self.PLAYER_INITIAL_POS_Y = 20;//200;
     self.PLAYER_GRAVITY_Y = 1000;
     self.PLAYER_JUMP_VELOCITY = -300;
 };
@@ -39,6 +39,7 @@ window.onload = function() {
     var player;
     var cursors;
     var stars;
+    var text;
 
     function preload () {
         game.load.image('sky', 'assets/sky.png');
@@ -77,6 +78,7 @@ window.onload = function() {
         player.animations.add('right', [5, 6, 7, 8], 10, true);
 
         cursors = game.input.keyboard.createCursorKeys();
+        text = game.add.text(220, 350, '', { fontSize: '32px', fill: '#ffffff' });
     }
 
     function update() {
@@ -106,5 +108,6 @@ window.onload = function() {
 
     function collectStar(player, star) {
         star.kill();
+        text.text = 'Well played!';
     }
 };
