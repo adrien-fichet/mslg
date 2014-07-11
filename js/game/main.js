@@ -33,22 +33,26 @@ var makePlatforms = function(platforms) {
 
 window.onload = function() {
     var conf = new Configuration();
-    var game = new Phaser.Game(conf.WINDOW_WIDTH, conf.WINDOW_HEIGHT, Phaser.AUTO, '',
+    var game = new Phaser.Game(conf.WINDOW_WIDTH, conf.WINDOW_HEIGHT, Phaser.CANVAS, '',
             { preload: preload, create: create, update: update });
     var platforms;
     var player;
     var cursors;
     var stars;
     var text;
+    var font;
+    var image;
 
-    function preload () {
+    function preload() {
+        Phaser.Canvas.setSmoothingEnabled(game.context, false);
         game.load.image('sky', 'assets/sky.png');
         game.load.image('ground', 'assets/platform.png');
         game.load.image('star', 'assets/star.png');
         game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
+        game.load.image('defaultFont', 'assets/Ninja Gaiden (Tecmo).png');
     }
 
-    function create () {
+    function create() {
         game.physics.startSystem(Phaser.Physics.ARCADE);
         game.add.sprite(0, 0, 'sky');
 
@@ -60,6 +64,7 @@ window.onload = function() {
         ground.body.immovable = true;
 
         makePlatforms(platforms);
+        setupFont();
 
         stars = game.add.group();
         stars.enableBody = true;
@@ -108,6 +113,18 @@ window.onload = function() {
 
     function collectStar(player, star) {
         star.kill();
-        text.text = 'Well played!';
+        font.text = 'Well played!';
+    }
+
+    function setupFont() {
+        var key = 'defaultFont';
+        var size = 8;
+        font = game.add.retroFont(key, size, size, Phaser.RetroFont.TEXT_SET1, 760 / 8, 0, 0, 0, 8);
+        font.align = Phaser.RetroFont.ALIGN_CENTER;
+        font.buildRetroFontText();
+        image = game.add.image(300, 370, font);
+        image.scale.set(4);
+        image.anchor.set(0.5);
+        image.smoothed = false;
     }
 };
