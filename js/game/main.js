@@ -2,8 +2,8 @@ var Configuration = function() {
     var self = this;
     self.WINDOW_WIDTH = 600;
     self.WINDOW_HEIGHT = 400;
-    self.PLAYER_INITIAL_POS_X = 450;//20;
-    self.PLAYER_INITIAL_POS_Y = 20;//200;
+    self.PLAYER_INITIAL_POS_X = 20;
+    self.PLAYER_INITIAL_POS_Y = 200;
     self.PLAYER_GRAVITY_Y = 1000;
     self.PLAYER_JUMP_VELOCITY = -300;
 };
