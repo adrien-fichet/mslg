@@ -1,3 +1,13 @@
+var Configuration = function() {
+    var self = this;
+    self.WINDOW_WIDTH = 600;
+    self.WINDOW_HEIGHT = 400;
+    self.PLAYER_INITIAL_POS_X = 20;
+    self.PLAYER_INITIAL_POS_Y = 200;
+    self.PLAYER_GRAVITY_Y = 1000;
+    self.PLAYER_JUMP_VELOCITY = -300;
+};
+
 var Ledge = function(platforms, x, y, sx, sy) {
     var ledge = platforms.create(x, y, 'ground');
     if (sx == null) { sx = 0.25; }
@@ -22,7 +32,9 @@ var makePlatforms = function(platforms) {
 };
 
 window.onload = function() {
-    var game = new Phaser.Game(600, 400, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+    var conf = new Configuration();
+    var game = new Phaser.Game(conf.WINDOW_WIDTH, conf.WINDOW_HEIGHT, Phaser.AUTO, '',
+            { preload: preload, create: create, update: update });
     var platforms;
     var player;
     var cursors;
@@ -54,11 +66,11 @@ window.onload = function() {
         star.body.gravity.y = 300;
         star.body.bounce.y = 0.7;
 
-        player = game.add.sprite(20, 200, 'dude');
+        player = game.add.sprite(conf.PLAYER_INITIAL_POS_X, conf.PLAYER_INITIAL_POS_Y, 'dude');
         game.physics.arcade.enable(player);
 
         player.body.bounce.y = 0.2;
-        player.body.gravity.y = 1000;
+        player.body.gravity.y = conf.PLAYER_GRAVITY_Y;
         player.body.collideWorldBounds = true;
 
         player.animations.add('left', [0, 1, 2, 3], 10, true);
@@ -88,7 +100,7 @@ window.onload = function() {
         }
 
         if (cursors.up.isDown && player.body.touching.down) {
-            player.body.velocity.y = -300;  // jump
+            player.body.velocity.y = conf.PLAYER_JUMP_VELOCITY;  // jump
         }
     }
 
