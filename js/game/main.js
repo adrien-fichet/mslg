@@ -14,19 +14,21 @@ var Configuration = function() {
     self.KEY_DISPLAY_DEBUG_INFO = Phaser.Keyboard.D;
 };
 
-var MovingLedge = function(platforms, x, y, sx, sy, minX, maxX) {
+var MovingLedge = function(platforms, x, y, sx, sy, minX, maxX, velocity) {
     var self = this;
     self.ledge = platforms.create(x, y, 'ground');
     if (sx == null) { sx = 0.25; }
     if (sy == null) { sy = 0.5; }
+    if (velocity == null) { velocity = 50; }
     self.ledge.scale.setTo(sx, sy);
     self.ledge.body.immovable = true;
+    self.ledge.body.velocity.x = velocity;
 
     self.move = function() {
         if (self.ledge.x >= maxX) {
-            self.ledge.body.velocity.x = -50;
+            self.ledge.body.velocity.x = -velocity;
         } else if (self.ledge.x <= minX) {
-            self.ledge.body.velocity.x = 50;
+            self.ledge.body.velocity.x = velocity;
         }
     }
 };
@@ -45,10 +47,8 @@ var makeIdlePlatforms = function(platforms) {
     createLedge(platforms, 440, 270, 0.10);
     createLedge(platforms, 440, 230, 0.10);
     createLedge(platforms, 350, 200, 0.10);
-    createLedge(platforms, 160, 160);
     createLedge(platforms, 60, 130, 0.10);
     createLedge(platforms, 0, 100);
-    createLedge(platforms, 200, 70);
     createLedge(platforms, 390, 100);
     createLedge(platforms, 550, 90, 0.10);
     createLedge(platforms, 550, 50, 0.10);
@@ -91,7 +91,9 @@ window.onload = function() {
         ground.body.immovable = true;
 
         makeIdlePlatforms(platforms);
-        movingLedges.push(new MovingLedge(platforms, 300, 300, null, null, 250, 300));
+        movingLedges.push(new MovingLedge(platforms, 300, 300, null, null, 250, 300, null));
+        movingLedges.push(new MovingLedge(platforms, 160, 160, null, null, 160, 200, 30));
+        movingLedges.push(new MovingLedge(platforms, 200, 70, null, null, 180, 250, null));
 
         setupFont();
 
