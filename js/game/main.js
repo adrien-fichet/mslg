@@ -11,6 +11,7 @@ var Configuration = function() {
     self.KEY_LEFT = Phaser.Keyboard.J;
     self.KEY_RIGHT = Phaser.Keyboard.L;
     self.KEY_JUMP = Phaser.Keyboard.S;
+    self.KEY_DISPLAY_DEBUG_INFO = Phaser.Keyboard.D;
 };
 
 var MovingLedge = function(platforms, x, y, sx, sy, minX, maxX) {
@@ -56,7 +57,7 @@ var makeIdlePlatforms = function(platforms) {
 window.onload = function() {
     var conf = new Configuration();
     var game = new Phaser.Game(conf.WINDOW_WIDTH, conf.WINDOW_HEIGHT, Phaser.CANVAS, '',
-            { preload: preload, create: create, update: update });
+            { preload: preload, create: create, update: update, render: render });
     var platforms;
     var player;
     var cursors;
@@ -66,6 +67,8 @@ window.onload = function() {
     var image;
     var movingLedges = [];
     var upKey, downKey, leftKey, rightKey, jumpKey;
+    var displayDebugInfo = false;
+    var displayDebugInfoKey;
 
     function preload() {
         Phaser.Canvas.setSmoothingEnabled(game.context, false);
@@ -137,8 +140,18 @@ window.onload = function() {
             player.body.velocity.y = conf.PLAYER_JUMP_VELOCITY;  // jump
         }
 
+        if (displayDebugInfoKey.justPressed()) {
+            displayDebugInfo = !displayDebugInfo;
+        }
+
         for (var i=0; i < movingLedges.length; i++) {
             movingLedges[i].move();
+        }
+    }
+
+    function render() {
+        if (displayDebugInfo == true) {
+            game.debug.pointer(game.input.activePointer);
         }
     }
 
@@ -165,5 +178,6 @@ window.onload = function() {
         leftKey = game.input.keyboard.addKey(conf.KEY_LEFT);
         rightKey = game.input.keyboard.addKey(conf.KEY_RIGHT);
         jumpKey = game.input.keyboard.addKey(conf.KEY_JUMP);
+        displayDebugInfoKey = game.input.keyboard.addKey(conf.KEY_DISPLAY_DEBUG_INFO);
     }
 };
