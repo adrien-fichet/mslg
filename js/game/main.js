@@ -13,6 +13,23 @@ var Configuration = function() {
     self.KEY_JUMP = Phaser.Keyboard.S;
 };
 
+var MovingLedge = function(platforms, x, y, sx, sy, minX, maxX) {
+    var self = this;
+    self.ledge = platforms.create(x, y, 'ground');
+    if (sx == null) { sx = 0.25; }
+    if (sy == null) { sy = 0.5; }
+    self.ledge.scale.setTo(sx, sy);
+    self.ledge.body.immovable = true;
+
+    self.move = function() {
+        if (self.ledge.x >= maxX) {
+            self.ledge.body.velocity.x = -50;
+        } else if (self.ledge.x <= minX) {
+            self.ledge.body.velocity.x = 50;
+        }
+    }
+};
+
 var createLedge = function(platforms, x, y, sx, sy) {
     var ledge = platforms.create(x, y, 'ground');
     if (sx == null) { sx = 0.25; }
@@ -47,7 +64,7 @@ window.onload = function() {
     var text;
     var font;
     var image;
-    var movingLedge;
+    var movingLedges = [];
     var upKey, downKey, leftKey, rightKey, jumpKey;
 
     function preload() {
@@ -71,14 +88,7 @@ window.onload = function() {
         ground.body.immovable = true;
 
         makeIdlePlatforms(platforms);
-        movingLedge = createLedge(platforms, 300, 300);
-        movingLedge.move = function() {
-            if (movingLedge.x >= 400) {
-                movingLedge.body.velocity.x = -50;
-            } else if (movingLedge.x <= 300) {
-                movingLedge.body.velocity.x = 50;
-            }
-        };
+        movingLedges.push(new MovingLedge(platforms, 300, 300, null, null, 250, 300));
 
         setupFont();
 
@@ -127,7 +137,9 @@ window.onload = function() {
             player.body.velocity.y = conf.PLAYER_JUMP_VELOCITY;  // jump
         }
 
-        movingLedge.move();
+        for (var i=0; i < movingLedges.length; i++) {
+            movingLedges[i].move();
+        }
     }
 
     function collectStar(player, star) {
