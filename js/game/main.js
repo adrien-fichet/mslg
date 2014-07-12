@@ -6,6 +6,11 @@ var Configuration = function() {
     self.PLAYER_INITIAL_POS_Y = 200;
     self.PLAYER_GRAVITY_Y = 1000;
     self.PLAYER_JUMP_VELOCITY = -300;
+    self.KEY_UP = Phaser.Keyboard.I;
+    self.KEY_DOWN = Phaser.Keyboard.K;
+    self.KEY_LEFT = Phaser.Keyboard.J;
+    self.KEY_RIGHT = Phaser.Keyboard.L;
+    self.KEY_JUMP = Phaser.Keyboard.S;
 };
 
 var createLedge = function(platforms, x, y, sx, sy) {
@@ -43,6 +48,7 @@ window.onload = function() {
     var font;
     var image;
     var movingLedge;
+    var upKey, downKey, leftKey, rightKey, jumpKey;
 
     function preload() {
         Phaser.Canvas.setSmoothingEnabled(game.context, false);
@@ -93,6 +99,7 @@ window.onload = function() {
         player.animations.add('right', [5, 6, 7, 8], 10, true);
 
         cursors = game.input.keyboard.createCursorKeys();
+        setupKeys();
         text = game.add.text(220, 350, '', { fontSize: '32px', fill: '#ffffff' });
     }
 
@@ -103,11 +110,11 @@ window.onload = function() {
 
         player.body.velocity.x = 0;
 
-        if (cursors.left.isDown) {
+        if (cursors.left.isDown || leftKey.isDown) {
             player.body.velocity.x = -150;
             player.animations.play('left');
 
-        } else if (cursors.right.isDown) {
+        } else if (cursors.right.isDown || rightKey.isDown) {
             player.body.velocity.x = 150;
             player.animations.play('right');
 
@@ -116,7 +123,7 @@ window.onload = function() {
             player.frame = 4;
         }
 
-        if (cursors.up.isDown && player.body.touching.down) {
+        if (player.body.touching.down && (cursors.up.isDown || jumpKey.isDown)) {
             player.body.velocity.y = conf.PLAYER_JUMP_VELOCITY;  // jump
         }
 
@@ -138,5 +145,13 @@ window.onload = function() {
         image.scale.set(4);
         image.anchor.set(0.5);
         image.smoothed = false;
+    }
+
+    function setupKeys() {
+        upKey = game.input.keyboard.addKey(conf.KEY_UP);
+        downKey = game.input.keyboard.addKey(conf.KEY_DOWN);
+        leftKey = game.input.keyboard.addKey(conf.KEY_LEFT);
+        rightKey = game.input.keyboard.addKey(conf.KEY_RIGHT);
+        jumpKey = game.input.keyboard.addKey(conf.KEY_JUMP);
     }
 };
