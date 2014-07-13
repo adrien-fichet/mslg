@@ -1,19 +1,3 @@
-var Configuration = function() {
-    var self = this;
-    self.WINDOW_WIDTH = 600;
-    self.WINDOW_HEIGHT = 400;
-    self.PLAYER_INITIAL_POS_X = 20;
-    self.PLAYER_INITIAL_POS_Y = 200;
-    self.PLAYER_GRAVITY_Y = 1000;
-    self.PLAYER_JUMP_VELOCITY = -300;
-    self.KEY_UP = Phaser.Keyboard.I;
-    self.KEY_DOWN = Phaser.Keyboard.K;
-    self.KEY_LEFT = Phaser.Keyboard.J;
-    self.KEY_RIGHT = Phaser.Keyboard.L;
-    self.KEY_JUMP = Phaser.Keyboard.S;
-    self.KEY_DISPLAY_DEBUG_INFO = Phaser.Keyboard.D;
-};
-
 var MovingLedge = function(platforms, x, y, sx, sy, minX, maxX, velocity) {
     var self = this;
     self.ledge = platforms.create(x, y, 'ground');
