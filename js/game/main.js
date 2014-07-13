@@ -32,8 +32,9 @@ window.onload = function() {
 
     function update() {
         game.physics.arcade.collide(player.sprite, level.idlePlatformsGroup);
+        game.physics.arcade.collide(player.sprite, level.movingPlatformsGroup);
         game.physics.arcade.collide(level.starsGroup, level.idlePlatformsGroup);
-        game.physics.arcade.overlap(player.sprite, level.stars, collectStar, null, this);
+        game.physics.arcade.overlap(player.sprite, level.starsGroup, collectStar, null, this);
 
         player.update();
         level.update();
