@@ -8,9 +8,7 @@ window.onload = function() {
     });
     var player = new Player(conf, game);
     var level = new Level(game);
-    var text;
-    var font;
-    var image;
+    var hud = new Hud(game);
     var displayDebugInfo = false;
     var displayDebugInfoKey;
 
@@ -18,16 +16,15 @@ window.onload = function() {
         Phaser.Canvas.setSmoothingEnabled(game.context, false);
         player.preload();
         level.preload();
-        game.load.image('defaultFont', 'assets/Ninja Gaiden (Tecmo).png');
+        hud.preload();
     }
 
     function create() {
         game.physics.startSystem(Phaser.Physics.ARCADE);
         level.create();
         player.create();
-        setupFont();
+        hud.create();
         displayDebugInfoKey = game.input.keyboard.addKey(conf.KEY_DISPLAY_DEBUG_INFO);
-        text = game.add.text(220, 350, '', { fontSize: '32px', fill: '#ffffff' });
     }
 
     function update() {
@@ -52,18 +49,6 @@ window.onload = function() {
 
     function collectStar(player, star) {
         star.kill();
-        font.text = 'Well played!';
-    }
-
-    function setupFont() {
-        var key = 'defaultFont';
-        var size = 8;
-        font = game.add.retroFont(key, size, size, Phaser.RetroFont.TEXT_SET1, 760 / 8, 0, 0, 0, 8);
-        font.align = Phaser.RetroFont.ALIGN_CENTER;
-        font.buildRetroFontText();
-        image = game.add.image(300, 370, font);
-        image.scale.set(4);
-        image.anchor.set(0.5);
-        image.smoothed = false;
+        hud.font.text = 'Well played!';
     }
 };
