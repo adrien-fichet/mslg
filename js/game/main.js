@@ -21,26 +21,28 @@ var makeIdlePlatforms = function(platforms) {
 
 window.onload = function() {
     var conf = new Configuration();
-    var game = new Phaser.Game(conf.WINDOW_WIDTH, conf.WINDOW_HEIGHT, Phaser.CANVAS, '',
-            { preload: preload, create: create, update: update, render: render });
+    var game = new Phaser.Game(conf.WINDOW_WIDTH, conf.WINDOW_HEIGHT, Phaser.CANVAS, '', {
+        preload: preload,
+        create: create,
+        update: update,
+        render: render
+    });
+    var player = new Player(conf, game);
     var platforms;
-    var player;
-    var cursors;
     var stars;
     var text;
     var font;
     var image;
     var movingLedges = [];
-    var upKey, downKey, leftKey, rightKey, jumpKey;
     var displayDebugInfo = false;
     var displayDebugInfoKey;
 
     function preload() {
         Phaser.Canvas.setSmoothingEnabled(game.context, false);
+        player.preload();
         game.load.image('sky', 'assets/sky.png');
         game.load.image('ground', 'assets/platform.png');
         game.load.image('star', 'assets/star.png');
-        game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
         game.load.image('defaultFont', 'assets/Ninja Gaiden (Tecmo).png');
     }
 
@@ -68,44 +70,18 @@ window.onload = function() {
         star.body.gravity.y = 300;
         star.body.bounce.y = 0.7;
 
-        player = game.add.sprite(conf.PLAYER_INITIAL_POS_X, conf.PLAYER_INITIAL_POS_Y, 'dude');
-        game.physics.arcade.enable(player);
+        player.create();
+        displayDebugInfoKey = game.input.keyboard.addKey(conf.KEY_DISPLAY_DEBUG_INFO);
 
-        player.body.bounce.y = 0.2;
-        player.body.gravity.y = conf.PLAYER_GRAVITY_Y;
-        player.body.collideWorldBounds = true;
-
-        player.animations.add('left', [0, 1, 2, 3], 10, true);
-        player.animations.add('right', [5, 6, 7, 8], 10, true);
-
-        cursors = game.input.keyboard.createCursorKeys();
-        setupKeys();
         text = game.add.text(220, 350, '', { fontSize: '32px', fill: '#ffffff' });
     }
 
     function update() {
-        game.physics.arcade.collide(player, platforms);
+        game.physics.arcade.collide(player.sprite, platforms);
         game.physics.arcade.collide(stars, platforms);
-        game.physics.arcade.overlap(player, stars, collectStar, null, this);
+        game.physics.arcade.overlap(player.sprite, stars, collectStar, null, this);
 
-        player.body.velocity.x = 0;
-
-        if (cursors.left.isDown || leftKey.isDown) {
-            player.body.velocity.x = -150;
-            player.animations.play('left');
-
-        } else if (cursors.right.isDown || rightKey.isDown) {
-            player.body.velocity.x = 150;
-            player.animations.play('right');
-
-        } else {
-            player.animations.stop();
-            player.frame = 4;
-        }
-
-        if (player.body.touching.down && (cursors.up.isDown || jumpKey.isDown)) {
-            player.body.velocity.y = conf.PLAYER_JUMP_VELOCITY;  // jump
-        }
+        player.update();
 
         if (displayDebugInfoKey.justPressed()) {
             displayDebugInfo = !displayDebugInfo;
@@ -137,14 +113,5 @@ window.onload = function() {
         image.scale.set(4);
         image.anchor.set(0.5);
         image.smoothed = false;
-    }
-
-    function setupKeys() {
-        upKey = game.input.keyboard.addKey(conf.KEY_UP);
-        downKey = game.input.keyboard.addKey(conf.KEY_DOWN);
-        leftKey = game.input.keyboard.addKey(conf.KEY_LEFT);
-        rightKey = game.input.keyboard.addKey(conf.KEY_RIGHT);
-        jumpKey = game.input.keyboard.addKey(conf.KEY_JUMP);
-        displayDebugInfoKey = game.input.keyboard.addKey(conf.KEY_DISPLAY_DEBUG_INFO);
     }
 };
