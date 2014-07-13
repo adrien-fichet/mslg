@@ -1,22 +1,3 @@
-var MovingLedge = function(platforms, x, y, sx, sy, minX, maxX, velocity) {
-    var self = this;
-    self.ledge = platforms.create(x, y, 'ground');
-    if (sx == null) { sx = 0.25; }
-    if (sy == null) { sy = 0.5; }
-    if (velocity == null) { velocity = 50; }
-    self.ledge.scale.setTo(sx, sy);
-    self.ledge.body.immovable = true;
-    self.ledge.body.velocity.x = velocity;
-
-    self.move = function() {
-        if (self.ledge.x >= maxX) {
-            self.ledge.body.velocity.x = -velocity;
-        } else if (self.ledge.x <= minX) {
-            self.ledge.body.velocity.x = velocity;
-        }
-    }
-};
-
 var createLedge = function(platforms, x, y, sx, sy) {
     var ledge = platforms.create(x, y, 'ground');
     if (sx == null) { sx = 0.25; }
