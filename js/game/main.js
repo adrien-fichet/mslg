@@ -9,8 +9,7 @@ window.onload = function() {
     var player = new Player(conf, game);
     var level = new Level(game);
     var hud = new Hud(game);
-    var displayDebugInfo = false;
-    var displayDebugInfoKey;
+    var debug = new Debug(conf, game);
 
     function preload() {
         Phaser.Canvas.setSmoothingEnabled(game.context, false);
@@ -24,7 +23,7 @@ window.onload = function() {
         level.create();
         player.create();
         hud.create();
-        displayDebugInfoKey = game.input.keyboard.addKey(conf.KEY_DISPLAY_DEBUG_INFO);
+        debug.create();
     }
 
     function update() {
@@ -35,16 +34,11 @@ window.onload = function() {
 
         player.update();
         level.update();
-
-        if (displayDebugInfoKey.justPressed()) {
-            displayDebugInfo = !displayDebugInfo;
-        }
+        debug.update();
     }
 
     function render() {
-        if (displayDebugInfo == true) {
-            game.debug.pointer(game.input.activePointer);
-        }
+        debug.render();
     }
 
     function collectStar(player, star) {
