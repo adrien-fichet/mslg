@@ -18,6 +18,7 @@ Player.prototype = {
         this.sprite.body.bounce.y = 0.2;
         this.sprite.body.gravity.y = this.conf.PLAYER_GRAVITY_Y;
         this.sprite.body.collideWorldBounds = true;
+        this.game.camera.follow(this.sprite);
 
         this.sprite.animations.add('left', [0, 1, 2, 3], 10, true);
         this.sprite.animations.add('right', [5, 6, 7, 8], 10, true);
