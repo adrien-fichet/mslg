@@ -10,6 +10,7 @@ Level.prototype = {
     preload: function() {
         this.game.load.image('sky', 'assets/sky.jpg');
         this.game.load.image('ground', 'assets/platform.png');
+        this.game.load.image('cloud', 'assets/cloud.png');
         this.game.load.image('star', 'assets/star.png');
     },
 

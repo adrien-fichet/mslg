@@ -1,9 +1,9 @@
 var MovingPlatform = function(group, x, y, sx, sy, minX, maxX, velocity) {
-    this.platform = group.create(x, y, 'ground');
+    this.platform = group.create(x, y, 'cloud');
     this.platform.body.immovable = true;
 
-    if (sx == null) { sx = 0.25; }
-    if (sy == null) { sy = 0.5; }
+    if (sx == null) { sx = 1; }
+    if (sy == null) { sy = 1; }
     this.platform.scale.setTo(sx, sy);
 
     if (velocity == null) { velocity = 50; }
