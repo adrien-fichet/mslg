@@ -40,9 +40,9 @@ Level.prototype = {
 
         this.movingPlatformsGroup = this.game.add.group();
         this.movingPlatformsGroup.enableBody = true;
-        new MovingPlatform(this.movingPlatformsGroup, 300, 300, null, null, 250, 300, null);
-        new MovingPlatform(this.movingPlatformsGroup, 160, 160, null, null, 160, 200, 30);
-        new MovingPlatform(this.movingPlatformsGroup, 200, 70, null, null, 180, 250, null);
+        new MovingPlatform(this.movingPlatformsGroup, 300, 300, 250, 300, null);
+        new MovingPlatform(this.movingPlatformsGroup, 160, 160, 160, 200, 30);
+        new MovingPlatform(this.movingPlatformsGroup, 200, 70, 180, 250, null);
 
         this.starsGroup = this.game.add.group();
         this.starsGroup.enableBody = true;
