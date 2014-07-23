@@ -8,17 +8,16 @@ var Level = function(game) {
 Level.prototype = {
 
     preload: function() {
-        this.game.load.image('sky', 'assets/sky.jpg');
+        this.game.load.image('sky', 'assets/sky4.jpg');
         this.game.load.image('ground', 'assets/platform.png');
         this.game.load.image('cloud', 'assets/cloud.png');
         this.game.load.image('star', 'assets/star.png');
     },
 
     create: function() {
-        this.game.world.setBounds(0, 0, 744, 400);
+        this.game.world.setBounds(0, 0, 800, 400);
 
         var sky = this.game.add.sprite(0, 0, 'sky');
-        sky.scale.setTo(3.5, 4);
         sky.fixedToCamera = true;
 
         this.idlePlatformsGroup = this.game.add.group();
