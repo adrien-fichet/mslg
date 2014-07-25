@@ -1,4 +1,4 @@
-var Player = function(conf, game) {
+var Player = function(game, conf) {
     this.game = game;
     this.conf = conf;
     this.sprite = null;

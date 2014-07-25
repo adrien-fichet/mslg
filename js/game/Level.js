@@ -1,5 +1,6 @@
-var Level = function(game) {
+var Level = function(game, conf) {
     this.game = game;
+    this.conf = conf;
     this.idlePlatformsGroup = null;
     this.movingPlatformsGroup = null;
     this.starsGroup = null;
@@ -8,7 +9,10 @@ var Level = function(game) {
 Level.prototype = {
 
     preload: function() {
-        this.game.load.image('sky', 'assets/sky4.jpg');
+        this.game.load.image('sky_layer1', 'assets/sky/sky_layer1.png');
+        this.game.load.image('sky_layer2', 'assets/sky/sky_layer2.png');
+        this.game.load.image('sky_layer3', 'assets/sky/sky_layer3.png');
+
         this.game.load.image('ground', 'assets/platform.png');
         this.game.load.image('cloud', 'assets/cloud.png');
         this.game.load.image('star', 'assets/star.png');
@@ -17,8 +21,11 @@ Level.prototype = {
     create: function() {
         this.game.world.setBounds(0, 0, 800, 400);
 
-        var sky = this.game.add.sprite(0, 0, 'sky');
-        sky.fixedToCamera = true;
+        var sky_layer3 = this.game.add.tileSprite(0, 0, this.conf.WINDOW_WIDTH, this.conf.WINDOW_HEIGHT, 'sky_layer3');
+        sky_layer3.fixedToCamera = true;
+        var sky_layer2 = this.game.add.sprite(0, 0, 'sky_layer2');
+        var sky_layer1 = this.game.add.sprite(0, 0, 'sky_layer1');
+        sky_layer1.fixedToCamera = true;
 
         this.idlePlatformsGroup = this.game.add.group();
         this.idlePlatformsGroup.enableBody = true;

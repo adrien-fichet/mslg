@@ -1,4 +1,4 @@
-var Debug = function(conf, game) {
+var Debug = function(game, conf) {
     this.conf = conf;
     this.game = game;
     this.displayDebugInfo = false;

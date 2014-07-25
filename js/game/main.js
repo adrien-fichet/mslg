@@ -6,10 +6,10 @@ window.onload = function() {
         update: update,
         render: render
     });
-    var player = new Player(conf, game);
-    var level = new Level(game);
+    var player = new Player(game, conf);
+    var level = new Level(game, conf);
     var hud = new Hud(game);
-    var debug = new Debug(conf, game);
+    var debug = new Debug(game, conf);
 
     function preload() {
         Phaser.Canvas.setSmoothingEnabled(game.context, false);
