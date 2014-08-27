@@ -13,6 +13,12 @@ window.onload = function() {
 
     function preload() {
         Phaser.Canvas.setSmoothingEnabled(game.context, false);
+
+        game.scale.maxWidth = conf.WINDOW_WIDTH;
+        game.scale.maxHeight = conf.WINDOW_HEIGHT;
+        game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+        game.scale.setScreenSize();
+
         player.preload();
         level.preload();
         hud.preload();
